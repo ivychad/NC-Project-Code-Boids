@@ -218,13 +218,14 @@ def plot_coefficients_evolution(all_es_data, coefficient_names=None):
 
             ax.scatter(x_vals, y_vals, alpha=0.1, s=50, color=color)
             #ax.plot(best_x, best_y, color=color, label=f'ES {es_idx+1}', linewidth=1.5)
-            ax.scatter(30, best_y[-1], color=color_best, s=500, marker='*',  label=f'ES {es_idx+1} Best')
+            ax.scatter(30, best_y[-1], color=color_best, s=500, marker='*', label=f'ES {es_idx+1}')
 
-        ax.set_title(f"Evolution of {coefficient_names[coeff_idx]}")
-        ax.set_xlabel("Generation")
-        ax.set_ylabel(coefficient_names[coeff_idx])
+        #ax.set_title(f"Evolution of {coefficient_names[coeff_idx]}")
+        ax.set_xlabel("Generation", fontsize=14)
+        ax.set_ylabel(coefficient_names[coeff_idx], fontsize=14)
         ax.grid(True)
-        #ax.legend()
+        if coeff_idx == 0:
+            ax.legend(framealpha=1,markerscale=0.5, loc="upper left", fontsize=12)
         ax.set_ylim(0, 1)
 
     plt.tight_layout()
@@ -259,10 +260,11 @@ def plot_fitness_evolution(fitness):
         best_values = run_fitness.mean(axis=1)
         plt.plot(np.arange(num_gen), best_values, color=color_mean, linewidth=1.5, label=f'ES {es_run+1}')
 
-    plt.title('Fitness Evolution')
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness')
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    #plt.title('Fitness Evolution')
+    plt.xlabel('Generation', fontsize=14)
+    plt.ylabel('Fitness', fontsize=14)
+    plt.legend(loc='lower right', fontsize=12)
     plt.tight_layout()
+    plt.ylim(0, 100)
 
     plt.show()
