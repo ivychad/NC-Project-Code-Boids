@@ -11,4 +11,4 @@ Hanna, Luca, Augusta
 
 ### Attack Centroid Strategy
 
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Centroidsss.mp4)
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Centroid.gif)
