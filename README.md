@@ -1,7 +1,7 @@
-﻿# Natural Computing Project Group 9
+﻿# Natural Computing Project Group 9 - Boids and Girlds
 Hanna, Luca, Augusta
 
-## BOIIIIIDA
+## BOIIIIIDSSSSS and GIRLDS
 
 
 
@@ -12,3 +12,20 @@ Hanna, Luca, Augusta
 ### Attack Centroid Strategy
 
 ![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Centroid.gif)
+
+
+
+
+### Attack Nearest Strategy
+
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Nearest.gif)
+
+### Attack Peripheral Strategy
+
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Peripheral.gif)
+
+
+### Attack Random Strategy
+
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Random.gif)
+
