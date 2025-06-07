@@ -2,174 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.cm as cm
-
-def plot_coefficients(all_generations_data, coefficient_names=None):
-    num_coeffs = len(all_generations_data[0][0][0])  # Assuming genes are 1D arrays
-
-    if coefficient_names is None:
-        coefficient_names = [f"Coeff {i}" for i in range(num_coeffs)]
-
-    fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-    axes = axes.flatten()
-
-    # Plot the 5 coefficients
-    for coeff_idx in range(num_coeffs):
-        ax = axes[coeff_idx]
-
-        all_values = []
-        best_values = []
-        for gen_idx, generation in enumerate(all_generations_data):
-            coeffs = [ind[0][coeff_idx] for ind in generation]
-            fitnesses = [ind[1] for ind in generation]
-            best_idx = np.argmax(fitnesses)
-            best_value = generation[best_idx][0][coeff_idx]
-
-            all_values.extend([(gen_idx, val) for val in coeffs])
-            best_values.append((gen_idx, best_value))
-        
-        x_vals, y_vals = zip(*all_values)
-        best_x, best_y = zip(*best_values)
-
-        ax.scatter(x_vals, y_vals, alpha=0.5, label='All individuals')
-        ax.plot(best_x, best_y, color='red', markersize=12, label='Best individual')
-        ax.set_title(f"Evolution of {coefficient_names[coeff_idx]}")
-        ax.set_xlabel("Generation")
-        ax.set_ylabel(coefficient_names[coeff_idx])
-        ax.grid(True)
-        ax.legend()
-        ax.set_ylim(0, 1)
-
-    plt.tight_layout()
-    plt.show()
-
-def plot_fitness(avg_fitnesses, std_fitnesses, highest_fitnesses):
-    plt.figure(figsize=(10, 6))
-    plt.plot(avg_fitnesses, label='Average Fitness', color='blue')
-    plt.fill_between(range(len(avg_fitnesses)), np.array(avg_fitnesses) - np.array(std_fitnesses), 
-                        np.array(avg_fitnesses) + np.array(std_fitnesses), color='blue', alpha=0.2, label='Std Dev')
-    plt.plot(highest_fitnesses, label='Highest Fitness', color='red')
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness')
-    plt.title('Genetic Algorithm Fitness Over Generations')
-    plt.legend()
-    plt.grid()
-    plt.show()
-
-
-def plot_fitness_scatter(all_fitnesses):
-    generations = []
-    fitness_values = []
-    best_generations = []
-    best_fitnesses = []
-    median_fitnesses = []
-
-    for gen_idx, gen_fitnesses in enumerate(all_fitnesses):
-        generations.extend([gen_idx] * len(gen_fitnesses))
-        fitness_values.extend(gen_fitnesses)
-
-        max_fitness = max(gen_fitnesses)
-        median_fitness = np.median(gen_fitnesses)
-
-        best_generations.append(gen_idx)
-        best_fitnesses.append(max_fitness)
-        median_fitnesses.append(median_fitness)
-
-    generations = np.array(generations)
-    fitness_values = np.array(fitness_values)
-
-    # Plot
-    plt.figure(figsize=(10, 6))
-    plt.scatter(generations, fitness_values, alpha=0.6, label='Fitness', color='blue')
-    #plt.scatter(best_generations, best_fitnesses, color='orange', s=60, edgecolors='black', label='Max per Generation')
-    plt.plot(best_generations, median_fitnesses, color='red', linestyle='--', linewidth=2, label='Median Fitness')
-
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness')
-    #plt.title('Fitness Scatter Plot with Max and Median per Generation')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-
-def plot_multiple_ga_runs(all_runs_data, all_avg_fitnesses, all_std_fitnesses, all_highest_fitnesses, coefficient_names=None):
-    """
-    Plot coefficients and fitness over generations for multiple GA runs in a 6-row, N-column grid.
-
-    Args:
-        all_runs_data: list of GA run data, each is a list of generations with (genes, fitness)
-        all_avg_fitnesses: list of average fitness arrays (1 per run)
-        all_std_fitnesses: list of std fitness arrays (1 per run)
-        all_highest_fitnesses: list of highest fitness arrays (1 per run)
-        coefficient_names: optional list of coefficient names
-    """
-    num_runs = len(all_runs_data)
-    num_coeffs = len(all_runs_data[0][0][0][0])  # shape: [run][generation][individual][gene]
-    num_rows = num_coeffs + 1  # last row for fitness
-    num_cols = num_runs
-
-    if coefficient_names is None:
-        coefficient_names = [f"Coeff {i}" for i in range(num_coeffs)]
-
-    fig, axes = plt.subplots(num_rows, num_cols, figsize=(4 * num_cols, 3 * num_rows), sharex='col')
-    axes = np.array(axes)
-
-    for run_idx in range(num_runs):
-        run_data = all_runs_data[run_idx]
-        avg_fit = all_avg_fitnesses[run_idx]
-        std_fit = all_std_fitnesses[run_idx]
-        high_fit = all_highest_fitnesses[run_idx]
-
-        # Plot each coefficient in a row
-        for coeff_idx in range(num_coeffs):
-            ax = axes[coeff_idx, run_idx]
-
-            all_values = []
-            best_values = []
-
-            for gen_idx, generation in enumerate(run_data):
-                coeffs = [ind[0][coeff_idx] for ind in generation]
-                fitnesses = [ind[1] for ind in generation]
-                best_idx = np.argmax(fitnesses)
-                best_value = generation[best_idx][0][coeff_idx]
-
-                all_values.extend([(gen_idx, val) for val in coeffs])
-                best_values.append((gen_idx, best_value))
-
-            x_vals, y_vals = zip(*all_values)
-            best_x, best_y = zip(*best_values)
-
-            ax.scatter(x_vals, y_vals, alpha=0.5, label='All individuals')
-            ax.plot(best_x, best_y, color='red', markersize=12, label='Best individual')
-
-            if run_idx == 0:
-                ax.set_ylabel(coefficient_names[coeff_idx])
-            if coeff_idx == 0:
-                ax.set_title(f"Run {run_idx + 1}")
-
-            ax.grid(True)
-
-        # Plot fitness in the last row
-        ax = axes[-1, run_idx]
-        generations = range(len(avg_fit))
-        ax.plot(generations, avg_fit, label='Average Fitness', color='blue')
-        ax.fill_between(generations,
-                        np.array(avg_fit) - np.array(std_fit),
-                        np.array(avg_fit) + np.array(std_fit),
-                        color='blue', alpha=0.2, label='Std Dev')
-        ax.plot(generations, high_fit, label='Highest Fitness', color='red')
-        if run_idx == 0:
-            ax.set_ylabel("Fitness")
-        ax.set_xlabel("Generation")
-        ax.grid(True)
-
-    # Only add legend to one plot
-    handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc='upper center', ncol=3)
-
-    plt.tight_layout(rect=[0, 0, 1, 0.97])
-    plt.suptitle("GA Runs: Coefficients and Fitness Over Generations", fontsize=16)
-    plt.show()
-
+from matplotlib.lines import Line2D
+from matplotlib.colors import to_rgba
 
 def plot_coefficients_evolution(all_es_data, coefficient_names=None):
     """
@@ -186,20 +20,20 @@ def plot_coefficients_evolution(all_es_data, coefficient_names=None):
     if coefficient_names is None:
         coefficient_names = [f"Coeff {i}" for i in range(num_coeffs)]
 
-    #colors = ["red", "blue", "purple", "darkorange", "green"]
-    colors = ["darkgrey", "darkgreen" , "darkblue", "purple", "darkred"]
-    colors_best = ["black", "forestgreen" , "blue", "darkviolet", "red"]
+    coeff_order = [2, 1, 0, 3, 4, 5]
+    colors = ["red", "mediumblue", "purple", "darkcyan", "green"]
     
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
     axes = axes.flatten()
 
-    for coeff_idx in range(num_coeffs):
-        ax = axes[coeff_idx]
+    legend_elements = []
+
+    for plot_idx, coeff_idx in enumerate(coeff_order):
+        ax = axes[plot_idx]
 
         for es_idx in range(num_es):
             es_data = all_es_data[es_idx]
             color = colors[es_idx]
-            color_best = colors_best[es_idx]
 
             all_values = []
             best_values = []
@@ -214,57 +48,202 @@ def plot_coefficients_evolution(all_es_data, coefficient_names=None):
                 best_values.append((gen_idx, best_value))
 
             x_vals, y_vals = zip(*all_values)
-            best_x, best_y = zip(*best_values)
+            ax.scatter(x_vals, y_vals, alpha=0.08, s=100, color=color, zorder=100)
 
-            ax.scatter(x_vals, y_vals, alpha=0.1, s=50, color=color)
-            #ax.plot(best_x, best_y, color=color, label=f'ES {es_idx+1}', linewidth=1.5)
-            ax.scatter(30, best_y[-1], color=color_best, s=500, marker='*', label=f'ES {es_idx+1}')
+            # Final generation stats
+            final_gen = es_data[-1]
+            final_coeffs = [ind[0][coeff_idx] for ind in final_gen]
+            mean_val = np.mean(final_coeffs)
+            std_val = np.std(final_coeffs)
 
-        #ax.set_title(f"Evolution of {coefficient_names[coeff_idx]}")
-        ax.set_xlabel("Generation", fontsize=14)
-        ax.set_ylabel(coefficient_names[coeff_idx], fontsize=14)
-        ax.grid(True)
-        if coeff_idx == 0:
-            ax.legend(framealpha=1,markerscale=0.5, loc="upper left", fontsize=12)
+            error_x = num_gens + es_idx * 0.6
+            ax.errorbar(
+                error_x, mean_val, yerr=std_val, fmt='_', linewidth=2,
+                color=color, capsize=5, zorder=100
+            )
+
+            best_final_val = best_values[-1][1]
+            ax.scatter(error_x, best_final_val, marker='*', s=300, color=color, zorder=101)
+
+            if plot_idx == 0:
+                # Add legend entries only once
+                legend_elements.append(Line2D(
+                    [0], [0], linestyle='None', marker='o', color=color, alpha=0.5,
+                    markersize=10, label=f'ES {es_idx+1} – simulation'
+                ))
+                legend_elements.append(Line2D(
+                    [0], [0], linestyle='-', color=color, linewidth=2,
+                    label=f'ES {es_idx+1} – mean ± std (last gen.)'
+                ))
+                legend_elements.append(Line2D(
+                    [0], [0], linestyle='None', marker='*', color=color,
+                    markersize=15, label=f'ES {es_idx+1} – fittest simulation (last gen.)'
+                ))
+
+        ax.set_xlabel("generation", fontsize=18)
+        ax.set_ylabel(f"{coefficient_names[coeff_idx].lower()} coefficient", fontsize=18)
+        ax.grid(True, axis='y', zorder=-100)
         ax.set_ylim(0, 1)
+        ax.set_xlim(-0.5, num_gens + 3)
+        ax.tick_params(labelsize=14)
 
-    plt.tight_layout()
+    if legend_elements:
+        fig.legend(
+            handles=legend_elements, loc='lower center', bbox_to_anchor=(0.5, 0.05),
+            ncol=num_es, fontsize=14
+        )
+
+    plt.tight_layout(rect=[0, 0.08, 1, 0.96])
+    fig.subplots_adjust(bottom=0.22)  # make space for large legend
     plt.show()
 
 
-def plot_fitness_evolution(fitness):
+def lighten_color(color, amount=0.5):
+    """
+    Lightens the given color by mixing it with white.
+
+    Parameters:
+    - color: matplotlib color string or RGB tuple
+    - amount: float, 0 (original color) to 1 (white)
+    """
+    c = np.array(to_rgba(color))
+    white = np.array([1, 1, 1, 1])
+    return tuple((1 - amount) * c + amount * white)
+
+def plot_fitness_evolution(fitness, legend=True):
     """
     Plot evolution of fitness over generations.
 
     Parameters:
     - fitness: shape (num_es_runs, num_gen, num_individuals)
-    - save_path: optional path to save figure
     """
     num_es_runs, num_gen, num_individuals = fitness.shape
-    colors = ["darkgrey", "darkgreen" , "darkblue", "purple", "darkred"]
-    colors_mean = ["black", "forestgreen" , "blue", "darkviolet", "red"]
+    base_colors = ["red", "mediumblue", "purple", "darkcyan", "green"]
     
-    plt.figure(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(6, 5))
 
     for es_run in range(num_es_runs):
-        run_fitness = fitness[es_run]  # shape: (num_gen, num_individuals)
-        color = colors[es_run]
-        color_mean = colors_mean[es_run]
+        run_fitness = fitness[es_run]
+        line_color = base_colors[es_run]
+        dot_color = lighten_color(line_color, amount=0.4)  # subtle lightening
 
         # Scatter all individuals
         for gen in range(num_gen):
-            plt.scatter([gen]*num_individuals, run_fitness[gen], 
-                        color=color, s=50, alpha=0.1)
+            ax.scatter(
+                [gen]*num_individuals, run_fitness[gen], 
+                color=dot_color, alpha=0.08, s=100, zorder=100,
+                label=f'ES {es_run+1} - simulation' if gen == 0 else None
+            )
 
-        # Line for best individual per generation
-        best_values = run_fitness.mean(axis=1)
-        plt.plot(np.arange(num_gen), best_values, color=color_mean, linewidth=1.5, label=f'ES {es_run+1}')
+        # Mean per generation
+        mean_values = run_fitness.mean(axis=1)
+        ax.plot(
+            np.arange(num_gen), mean_values,
+            color=line_color, linewidth=1.5,
+            label=f'ES {es_run+1} - mean', zorder=101
+        )
 
-    #plt.title('Fitness Evolution')
-    plt.xlabel('Generation', fontsize=14)
-    plt.ylabel('Fitness', fontsize=14)
-    plt.legend(loc='lower right', fontsize=12)
+    ax.set_xlabel('generation', fontsize=18)
+    ax.set_ylabel('fitness', fontsize=18)
+    ax.tick_params(labelsize=14)
+    ax.set_ylim(0, 100)
+    ax.grid(True, axis='y', zorder=-100)
+
+    if legend:
+        ax.legend(
+            loc='lower center', bbox_to_anchor=(0.5, -0.45),
+            ncol=num_es_runs, fontsize=14
+        )
+
     plt.tight_layout()
-    plt.ylim(0, 100)
+    fig.subplots_adjust(bottom=0.25)
+    plt.show()
 
+def plot_fitness_scatter(all_fitnesses):
+    generations = []
+    fitness_values = []
+    best_generations = []
+    best_fitnesses = []
+    median_fitnesses = []
+    mean_fitnesses = []
+
+    for gen_idx, gen_fitnesses in enumerate(all_fitnesses):
+        generations.extend([gen_idx] * len(gen_fitnesses))
+        fitness_values.extend(gen_fitnesses)
+
+        max_fitness = max(gen_fitnesses)
+        #median_fitness = np.median(gen_fitnesses)
+        mean_fitness = np.mean(gen_fitnesses)
+
+        best_generations.append(gen_idx)
+        best_fitnesses.append(max_fitness)
+        #median_fitnesses.append(median_fitness)
+        mean_fitnesses.append(mean_fitness)
+
+
+    generations = np.array(generations)
+    fitness_values = np.array(fitness_values)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    ax.scatter(generations, fitness_values, alpha=0.08, s=100, label='simulation', color='C1', zorder=100)
+    #ax.plot(best_generations, median_fitnesses, color='k', linestyle='--', linewidth=3, label='median simulation')
+    ax.plot(best_generations, mean_fitnesses, color='C1', linestyle='-', linewidth=1.5, label='simulation – mean', zorder=100)
+    ax.set_xlabel('generation', fontsize=18)
+    ax.set_ylabel('fitness', fontsize=18)
+    ax.set_ylim(20,60)
+    ax.set_yticks(np.arange(20, 61, 10))
+    ax.set_xlim(-1,21)
+    ax.set_xticks(np.arange(0, 21, 5))
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=2, fontsize=14)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.grid(True, axis='y')
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_coefficients(all_generations_data, coefficient_names=None):
+    coeff_order = [2, 1, 0, 4, 3, 5]
+    num_coeffs = len(all_generations_data[0][0][0])  # Assuming genes are 1D arrays
+
+    if coefficient_names is None:
+        coefficient_names = [f"Coeff {i}" for i in range(num_coeffs)]
+
+    fig, axes = plt.subplots(6, 1, figsize=(5, 20), sharex=True)
+    axes = axes.flatten()
+
+    for plot_idx, coeff_idx in enumerate(coeff_order):
+        ax = axes[plot_idx]
+
+        all_values = []
+        best_values = []
+        for gen_idx, generation in enumerate(all_generations_data):
+            coeffs = [ind[0][coeff_idx] for ind in generation]
+            fitnesses = [ind[1] for ind in generation]
+            best_idx = np.argmax(fitnesses)
+            best_value = generation[best_idx][0][coeff_idx]
+
+            all_values.extend([(gen_idx, val) for val in coeffs])
+            best_values.append((gen_idx, best_value))
+
+        x_vals, y_vals = zip(*all_values)
+        best_x, best_y = zip(*best_values)
+
+        ax.scatter(x_vals, y_vals, alpha=0.08, c='k', s=100, label='simulation', zorder=100)
+        ax.plot(best_x, best_y, color='C1', linestyle='--', linewidth=1.5, zorder=100)  # No label here
+
+        # Orange star for final generation
+        final_gen_idx, final_best_val = best_x[-1], best_y[-1]
+        ax.plot(final_gen_idx, final_best_val, marker='*', linestyle='--', markersize=18, linewidth=1.5, color='C1', label='fittest simulation', zorder=101)
+
+        ax.set_xticks(np.arange(0, 21, 5))
+        ax.set_ylabel(f'{coefficient_names[coeff_idx].lower()} coefficient', fontsize=18)
+        ax.tick_params(axis='both', labelsize=14)
+        ax.grid(True, axis='y')
+        ax.set_ylim(0, 1)
+
+        if plot_idx == 5:
+            ax.set_xlabel('generation', fontsize=18)
+            ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=2, fontsize=14)
+
+    plt.tight_layout()
     plt.show()
