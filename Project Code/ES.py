@@ -257,7 +257,7 @@ class EvolutionaryStrategy:
             # Save generation data
             gen_data = [(p.gene_plot, p.fitness) for p in self.population]
             all_generations_data.append(gen_data)
-            #print([str(p) for p in self.population])
+            print([str(p) for p in self.population])
 
         # Return data for plotting
         return fitnesses_all, all_generations_data

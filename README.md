@@ -26,20 +26,26 @@ The figures below show how the coefficients evolved over generations for each pr
 
 ### Attack Centroid Strategy
 
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/centroid_coef.png)
+
+Example simulation using the final evolved coefficients from one ES run:
+
 - Seperation: 0.64
 - Cohesion:: 0.31
 - Alignment: 0.10
 - Dodge: 0.58
 - Repel: 0.71
 - Wiggle: 0.23
-- Fitness: 
+- Fitness: 88
 
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Centroid.gif)
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/centroid.gif)
 
-
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/centroid_coef.png)
 
 ### Attack Nearest Strategy
+
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/nearest_coef.png)
+
+Example simulation using the final evolved coefficients from one ES run:
 
 - Seperation: 0.76
 - Cohesion:: 0.11
@@ -49,38 +55,44 @@ The figures below show how the coefficients evolved over generations for each pr
 - Wiggle: 0.06
 - Fitness: 62
 
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Nearest.gif)
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/nearest.gif)
 
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/nearest_coef.png)
+
 
 ### Attack Peripheral Strategy
 
-- Seperation: 
-- Cohesion:: 
-- Alignment: 
-- Dodge: 
-- Repel:
-- Wiggle: 
-- Fitness: 
-
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Peripheral.gif)
-
 ![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/peripheral_coef.png)
+
+Example simulation using the final evolved coefficients from one ES run:
+
+- Seperation: 0.63
+- Cohesion: 0.45
+- Alignment: 1.00
+- Dodge: 0.23
+- Repel: 0.29
+- Wiggle: 0.94
+- Fitness: 73
+
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/peripheral.gif)
+
 
 
 ### Attack Random Strategy
 
-- Seperation: 
-- Cohesion:: 
-- Alignment: 
-- Dodge: 0.
-- Repel: 0.
-- Wiggle: 0.
-- Fitness: 
-
-![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/Random.gif)
-
 ![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/random_coef.png)
+
+Example simulation using the final evolved coefficients from one ES run:
+
+- Seperation: 0.30
+- Cohesion: 0.13
+- Alignment: 0.14
+- Dodge: 0.94
+- Repel: 0.00
+- Wiggle: 0.49
+- Fitness: 76
+
+![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/random.gif)
+
 
 
 ## Credit
