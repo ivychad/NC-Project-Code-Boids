@@ -176,7 +176,6 @@ class EvolutionaryStrategy:
         for rp, fitness in zip(self.population, fitnesses):
             rp.fitness = fitness
 
-
     
     def fitness_proportional_parent_selection(self):
         fitnesses = np.array([p.fitness for p in self.population])
@@ -196,27 +195,6 @@ class EvolutionaryStrategy:
             parent1, parent2 = np.random.choice(self.population, size=2, p=probabilities, replace=False)
 
         return parent1, parent2
-
-    
-    
-    def tournament_parent_selection(self, K=5):
-        candidates1 = np.random.choice(self.population, K, replace=False)
-        parent1 = max(candidates1, key=lambda x: x.fitness)
-
-        candidates2 = np.random.choice(self.population, K, replace=False)
-        parent2 = max(candidates2, key=lambda x: x.fitness)
-
-        return parent1, parent2
-
-
-    def fittest_parent_selection(self):
-            self.population.sort()
-            competitors = self.population[-(self.population_size // 2):]
-            parent1, parent2 = np.random.choice(competitors, size=2, replace=False)
-            return parent1, parent2
-    
-    # Survival selection algorithms
-
 
     def generation(self, parent_selection_method=None):
         """
