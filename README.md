@@ -1,6 +1,7 @@
 ﻿# Natural Computing Project - The good boids and the bad boid
 
 Hanna Hoogen, Luca Pattavina, Augusta van Haren
+
 Radboud University, Nijmegen, Netherlands
 
 ## Project Description
