@@ -1,4 +1,4 @@
-﻿# Natural Computing Project Group 9 - The good boids and the bad boid
+﻿# Natural Computing Project - The good boids and the bad boid
 
 Hanna Hoogen, Luca Pattavina, Augusta van Haren
 
