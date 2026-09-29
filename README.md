@@ -1,4 +1,4 @@
-﻿# Natural Computing Project - The good boids and the bad boid
+﻿# Boids of a Feather Flock Together — Evolving Prey Behaviours Under Different Predator Attack Strategies
 
 Hanna Hoogen, Luca Pattavina, Augusta van Haren
 
