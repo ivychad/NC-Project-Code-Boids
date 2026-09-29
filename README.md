@@ -1,8 +1,8 @@
 ﻿# Boids of a Feather Flock Together — Evolving Prey Behaviours Under Different Predator Attack Strategies
 
-Hanna Hoogen, Luca Pattavina, Augusta van Haren
+Augusta van Haren, Hanna Hoogen, Luca Pattavina
 
-Radboud University, Nijmegen, Netherlands
+_Radboud University, Nijmegen, Netherlands_
 
 ## Project Description
 
