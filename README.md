@@ -1,6 +1,6 @@
 ﻿# Boids of a Feather Flock Together — Evolving Prey Behaviours Under Different Predator Attack Strategies
 
-Augusta van Haren, Hanna Hoogen, Luca Pattavina
+[Augusta van Haren](https://github.com/amavanharen), [Hanna Hoogen](https://github.com/ivychad), [Luca Pattavina](https://github.com/xPatta)
 
 _Radboud University, Nijmegen, Netherlands_ 
 
@@ -91,6 +91,7 @@ Example simulation using the final evolved coefficients from one ES run:
 
 ![](https://github.com/ivychad/NC-Project-Code-Boids/blob/main/random.gif)
 
-## Credit
+## Aknowledgements
 
-This code builds upon the simulation code by Ojo et al. (2023), [GitHub Ojo Code](https://github.com/MOj0/Collective-Behavior-GroupB).
+This code builds upon the simulation code by Ojo et al. (2023), [GitHub Ojo Code](https://github.com/MOj0/Collective-Behavior-GroupB). <br>
+If you use this implementation, please cite both the above-mentioned work by Ojo et al., as well as [our original paper](https://arxiv.org/html/2609.37885).
