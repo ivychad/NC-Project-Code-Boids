@@ -2,7 +2,7 @@
 
 Augusta van Haren, Hanna Hoogen, Luca Pattavina
 
-_Radboud University, Nijmegen, Netherlands_
+_Radboud University, Nijmegen, Netherlands_ 
 
 ## Project Description
 
